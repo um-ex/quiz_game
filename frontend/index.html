@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Computer Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to My Computer Quiz!</h1>
+
+    <div id="start">
+        <lablel for="username">Enter your username</lablel>
+        <input type="text" id="username" placeholder="Enter your name" autocomplete="off" />
+        <button id="startButton">Start Quiz</button>
+    </div>
+
+    <div id="quiz" style="display:none;">
+        <form id="quizForm"></form>
+        <button onclick="submitQuiz()">Submit Quiz</button>
+    </div>
+
+    <div id="result" style="display:none;"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+# quiz_game/.gitignore
+backend/.env
+backend/__pycache__/ 
+
