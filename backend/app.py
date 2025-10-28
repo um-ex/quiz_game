@@ -1,22 +1,34 @@
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 import mysql.connector 
+import time
+from mysql.connector import Error
 from dotenv import load_dotenv
 import os 
 
 # load environment variables from .env file
 load_dotenv()
 
-app = Flask(__name__, static_folder="../frontend", static_url_path="/")
+app = Flask(__name__, static_folder="/frontend", static_url_path="/")
 CORS(app)  # allows frontend JS to call backend APIs
 
 # --- MySQL connection setup ---
-db = mysql.connector.connect(
-    host=os.getenv("DB_HOST"),  # change if needed
-    user=os.getenv("DB_USER"),  # change if needed
-    password=os.getenv("DB_PASSWORD"),  # change this
-    database=os.getenv("DB_NAME")  # change if needed
-)
+for i in range(10):
+    try:
+        db = mysql.connector.connect(
+            host=os.getenv("DB_HOST"),  # change if needed
+            user=os.getenv("DB_USER"),  # change if needed
+            password=os.getenv("DB_PASSWORD"),  # change this
+            port=os.getenv("DB_PORT"),
+            database=os.getenv("DB_NAME")  # change if needed
+        )
+        print("connected to mysql !")
+        break
+    except Error as e:
+        print(f"Waiting for MySQL... ({i+1}/10)")
+        time.sleep(5)
+else: 
+    raise Exception("Could not connect to MySQL after 10 attempts")
 
 # --- Serve frontend ---
 @app.route('/')
@@ -56,4 +68,4 @@ def submit_quiz():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
